@@ -78,12 +78,22 @@ public class Events implements Listener {
             LOGGER.log(Level.WARNING, "Material: {0}", material.name());
             LOGGER.log(Level.WARNING, "Used: {0}", player.getStatistic(Statistic.USE_ITEM, material));
         }
+        quantityEaten.sort((num1, num2) -> {
+            return Integer.compare(num2, num1);
+        });
 
-        int maxInt = quantityEaten.stream().mapToInt(Integer::intValue).max().getAsInt();
-        int sum = quantityEaten.stream().mapToInt(Integer::intValue).sum();
+        Material currentFoodMaterial;
+        try {
+            currentFoodMaterial = event.getItem().getType();
+        }
+        catch (NullPointerException ignored) {
+            return;
+        }
 
-        int foodQuantityDifference = maxInt*2-sum;
-        if(foodQuantityDifference > 10)
+        if(player.getStatistic(Statistic.USE_ITEM, currentFoodMaterial) != quantityEaten.get(0)) return;
+
+        int foodQuantityDifference = quantityEaten.get(0) - quantityEaten.get(1);
+        if(foodQuantityDifference >= 9)
             player.addPotionEffect(
                     new PotionEffect(
                             PotionEffectType.CONFUSION,

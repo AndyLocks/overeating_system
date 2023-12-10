@@ -2,7 +2,3 @@ name: overeating_system
 version: '1.0'
 main: illia.kai.overeating_system.Overeating_system
 api-version: '1.20'
-
-commands:
-  test:
-    usage: /test
